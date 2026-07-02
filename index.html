@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Альбом — портфолио дизайнера</title>
+<title>DBratsky — Roblox Graphics & Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -13,22 +13,42 @@
 
 <header class="site-header">
   <div class="brand">
-    <span class="brand-mark">✦</span>
-    <span class="brand-name">Proof&nbsp;Album</span>
+    <span class="brand-mark">⚡</span>
+    <span class="brand-name">DBratsky</span>
   </div>
   <nav class="site-nav">
-    <a href="#deck">Работы</a>
-    <a href="#catalog">Каталог</a>
-    <a href="#contact">Контакты</a>
+    <a href="#deck">Портфолио</a>
+    <a href="#offer">Условия</a>
+    <a href="#contact">Заказать</a>
   </nav>
 </header>
 
 <main>
   <section class="hero">
-    <p class="hero-eyebrow">Дизайн для игровых сообществ · банеры / логотипы / стрим-графика</p>
-    <h1 class="hero-title">Альбом<br>работ</h1>
-    <p class="hero-sub">Каждый лист в этой стопке — контрольный оттиск с водяным знаком,
-      как настоящие пробные фотоотпечатки. Пролистайте колоду, чтобы посмотреть проекты для ZNRP и RRP.</p>
+    <p class="hero-eyebrow">Roblox Graphics &amp; Design</p>
+    <h1 class="hero-title">Привет, я<br>Дмитрий Братский</h1>
+    <p class="hero-sub">Создаю сочный визуал для Roblox-проектов, групп и Discord-серверов:
+      аватарки, баннеры, обложки. Первое, что видит игрок — иконка плейса и баннер группы.
+      Если они скучные, он просто пролистнёт мимо. Помогу поднять онлайн красивой графикой.</p>
+    <a class="cta" href="#deck">Смотреть портфолио ↓</a>
+  </section>
+
+  <section class="offer" id="offer">
+    <div class="offer-grid">
+      <div class="offer-item">
+        <span class="offer-num">₽</span>
+        <p>Никаких робуксов и комиссий сайта — принимаю <strong>только рубли</strong></p>
+      </div>
+      <div class="offer-item">
+        <span class="offer-num">✎</span>
+        <p><strong>Свободная цена</strong> — сам решаешь, сколько стоит работа, исходя из бюджета</p>
+      </div>
+      <div class="offer-item">
+        <span class="offer-num">◆</span>
+        <p>Опыт и <strong>сочный стиль</strong> — только внешка: авы, баннеры, обложки</p>
+      </div>
+    </div>
+    <p class="offer-note">⚠ Не берусь за UI-менюшки и скрипты для игр — только графика.</p>
   </section>
 
   <section class="deck-section" id="deck">
@@ -54,17 +74,18 @@
 
   <section class="about" id="contact">
     <div class="about-inner">
-      <h3>О альбоме</h3>
-      <p>Все работы промаркированы водяным знаком как пробные версии — финальные файлы
-        передаются заказчику после согласования. По вопросам сотрудничества:</p>
-      <a class="mail" href="mailto:hello@yourname.design">hello@yourname.design</a>
+      <h3>Заказать работу</h3>
+      <p>Все примеры выше промаркированы водяным знаком — это пробные версии,
+        финальные файлы передаются после оплаты. Портфолио скромное, только начинаю
+        принимать заказы, поэтому цену обсуждаем индивидуально под твой бюджет.</p>
+      <a class="mail" href="https://discord.com/" target="_blank" rel="noopener">Написать в Discord →</a>
     </div>
   </section>
 </main>
 
 <footer class="site-footer">
-  <span>© <span id="year"></span> Proof Album</span>
-  <span class="footer-note">портфолио · банеры · логотипы · стрим-оформление</span>
+  <span>© <span id="year"></span> DBratsky. Все права защищены.</span>
+  <span class="footer-note">Дизайн по твоей цене</span>
 </footer>
 
 <script>
@@ -75,7 +96,7 @@
 const works = [
   { file: "cover_RRPvodznak.jpg",              title: "RRP — Обложка" },
   { file: "logo_RRPvodznak.jpg",                title: "RRP — Логотип" },
-  { file: "logo_RRP1vodznak.png",               title: "RRP — Логотип (вариант 2)" },
+  { file: "logo_RRP1vodznak.png",               title: "RRP — Логотип (вариант 2)" }, // ⚠ на скриншоте .png, не .jpg
   { file: "bannerZNRPvodznak.jpg",              title: "ZNRP — Банер" },
   { file: "ZNRPbanner_rulesvodznak.jpg",        title: "ZNRP — Банер (правила)" },
   { file: "ZNRPlogo1vodznak.png",                title: "ZNRP — Логотип" },
@@ -203,6 +224,16 @@ window.addEventListener('keydown', e => {
 document.getElementById('year').textContent = new Date().getFullYear();
 
 render();
+
+/* Лёгкая защита от случайного копирования картинок.
+   Это не настоящая защита (в DevTools можно всё равно всё увидеть),
+   а просто фильтр от ленивых "скачал через ПКМ". */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12') e.preventDefault();
+  if (e.ctrlKey && e.shiftKey && ['I','C','J'].includes(e.key.toUpperCase())) e.preventDefault();
+  if (e.ctrlKey && e.key.toUpperCase() === 'U') e.preventDefault();
+});
 </script>
 </body>
 </html>
