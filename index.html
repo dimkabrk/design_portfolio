@@ -96,7 +96,6 @@
 const works = [
   { file: "cover_RRPvodznak.jpg",              title: "RRP — Обложка" },
   { file: "logo_RRPvodznak.jpg",                title: "RRP — Логотип" },
-  { file: "logo_RRP1vodznak.png",               title: "RRP — Логотип (вариант 2)" }, // ⚠ на скриншоте .png, не .jpg
   { file: "bannerZNRPvodznak.jpg",              title: "ZNRP — Банер" },
   { file: "ZNRPbanner_rulesvodznak.jpg",        title: "ZNRP — Банер (правила)" },
   { file: "ZNRPlogo1vodznak.png",                title: "ZNRP — Логотип" },
@@ -114,8 +113,7 @@ const deckFrame = document.querySelector('.deck-frame');
 
 totalEl.textContent = works.length;
 
-let order = works.map((_, i) => i);   // текущий порядок стопки (order[0] = верхняя карта)
-let animating = false;
+let order = works.map((_, i) => i);   // текущий порядок (order[0] = показанная картинка)
 let currentRatio = 4 / 5; // ширина/высота, обновляется под реальную картинку
 
 function imgSrc(file){
@@ -146,39 +144,29 @@ function watchRatio(img, depth){
 
 function render(){
   deckEl.innerHTML = '';
-  // рисуем от нижних к верхним, показываем максимум 5 карт стопки
-  const visible = order.slice(0, 5).reverse();
-  visible.forEach((workIndex, i) => {
-    const depth = visible.length - 1 - i; // 0 = верхняя карта
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.style.setProperty('--depth', depth);
-    card.style.zIndex = 100 - depth;
 
-    const inner = document.createElement('div');
-    inner.className = 'card-inner';
+  const card = document.createElement('div');
+  card.className = 'card is-top';
 
-    const img = document.createElement('img');
-    img.src = imgSrc(works[workIndex].file);
-    img.alt = works[workIndex].title;
-    img.draggable = false;
-    inner.appendChild(img);
-    watchRatio(img, depth);
+  const inner = document.createElement('div');
+  inner.className = 'card-inner';
 
-    const tag = document.createElement('span');
-    tag.className = 'watermark-tag';
-    tag.textContent = 'PROOF';
-    inner.appendChild(tag);
+  const workIndex = order[0];
+  const img = document.createElement('img');
+  img.src = imgSrc(works[workIndex].file);
+  img.alt = works[workIndex].title;
+  img.draggable = false;
+  inner.appendChild(img);
+  watchRatio(img, 0);
 
-    card.appendChild(inner);
+  const tag = document.createElement('span');
+  tag.className = 'watermark-tag';
+  tag.textContent = 'PROOF';
+  inner.appendChild(tag);
 
-    if(depth === 0){
-      card.classList.add('is-top');
-      card.addEventListener('click', () => next());
-      attachSwipe(card);
-    }
-    deckEl.appendChild(card);
-  });
+  card.appendChild(inner);
+  attachSwipe(card);
+  deckEl.appendChild(card);
 
   const front = works[order[0]];
   capTitle.textContent = front.title;
@@ -201,36 +189,16 @@ function renderCatalog(){
 }
 
 function next(){
-  if(animating) return;
-  const top = deckEl.querySelector('.is-top .card-inner');
-  if(!top){ return; }
-  animating = true;
-  top.classList.add('turn-out');
-  top.addEventListener('animationend', () => {
-    order.push(order.shift());
-    render();
-    animating = false;
-  }, { once:true });
+  order.push(order.shift());
+  render();
 }
 
 function prev(){
-  if(animating) return;
-  animating = true;
   order.unshift(order.pop());
   render();
-  requestAnimationFrame(() => {
-    const top = deckEl.querySelector('.is-top .card-inner');
-    if(!top){ animating = false; return; }
-    top.classList.add('turn-in');
-    top.addEventListener('animationend', () => {
-      top.classList.remove('turn-in');
-      animating = false;
-    }, { once:true });
-  });
 }
 
 function jumpTo(workIndex){
-  if(animating) return;
   const pos = order.indexOf(workIndex);
   if(pos === -1) return;
   order = order.slice(pos).concat(order.slice(0, pos));
