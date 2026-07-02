@@ -1,0 +1,15 @@
+*{box-sizing:border-box;margin:0;padding:0;user-select:none;-webkit-user-select:none;}
+body{background-color:#0b0c10;color:#c5c6c7;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;padding:40px 20px;min-height:100vh;}
+header{text-align:center;margin-bottom:40px;}
+.logo{font-size:32px;font-weight:800;color:#66fcf1;letter-spacing:2px;text-transform:uppercase;}
+.subtitle{font-size:14px;color:#45f3ff;margin-top:5px;letter-spacing:1px;}
+.intro{max-width:800px;margin:0 auto 50px auto;text-align:center;background:#1f2833;padding:30px;border-radius:12px;border:1px solid #2f3e46;}
+.intro h1{color:#fff;font-size:24px;margin-bottom:15px;}
+.intro p{font-size:15px;line-height:1.6;color:#a4b0be;}
+.grid{max-width:1200px;margin:0 auto;display:block;text-align:center;}
+.card{display:inline-block;width:calc(33.333% - 20px);margin:10px;background:#1f2833;border-radius:8px;overflow:hidden;border:1px solid #2f3e46;vertical-align:top;text-align:left;}
+@media(max-width:900px){.card{width:calc(50% - 20px);}}
+@media(max-width:600px){.card{width:100%;margin:10px 0;}}
+.card img{width:100%;height:220px;object-fit:cover;display:block;pointer-events:none;}
+.card .info{padding:15px;font-size:14px;font-weight:600;color:#fff;background:#1a222d;}
+footer{text-align:center;margin-top:60px;padding-top:20px;border-top:1px solid #1f2833;font-size:13px;color:#666;}
