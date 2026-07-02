@@ -2,43 +2,207 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DBratsky Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Альбом — портфолио дизайнера</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-<div class="logo">DBratsky</div>
-<div class="subtitle">Roblox Graphics & Design</div>
+
+<header class="site-header">
+  <div class="brand">
+    <span class="brand-mark">✦</span>
+    <span class="brand-name">Proof&nbsp;Album</span>
+  </div>
+  <nav class="site-nav">
+    <a href="#deck">Работы</a>
+    <a href="#catalog">Каталог</a>
+    <a href="#contact">Контакты</a>
+  </nav>
 </header>
+
 <main>
-<div class="intro">
-<h1>Привет, я Дмитрий Братский ⚡</h1>
-<p>Создаю сочный визуал для Roblox-проектов, групп и Discord-серверов. Аватарки, баннеры, обложки. Оплата свободная и только в рублях! Скрипты и игровое меню (UI) не делаю.</p>
-</div>
-<div class="album">
-<div class="item i1"><img src="./public/bannerZNRPvodznak.jpg" alt="Work"></div>
-<div class="item i2"><img src="./public/cover_RRPvodznak.jpg" alt="Work"></div>
-<div class="item i3"><img src="./public/logo_RRP1vodznak.jpg" alt="Work"></div>
-<div class="item i4"><img src="./public/logo_RRPvodznak.jpg" alt="Work"></div>
-<div class="item i5"><img src="./public/ZNRPbanner_rulesvodznak.jpg" alt="Work"></div>
-<div class="item i6"><img src="./public/ZNRPlogo1vodznak.png" alt="Work"></div>
-<div class="item i7"><img src="./public/баннер2стримvodznak.png" alt="Work"></div>
-<div class="item i8"><img src="./public/баннерутреннийстримvodznak.png" alt="Work"></div>
-</div>
+  <section class="hero">
+    <p class="hero-eyebrow">Дизайн для игровых сообществ · банеры / логотипы / стрим-графика</p>
+    <h1 class="hero-title">Альбом<br>работ</h1>
+    <p class="hero-sub">Каждый лист в этой стопке — контрольный оттиск с водяным знаком,
+      как настоящие пробные фотоотпечатки. Пролистайте колоду, чтобы посмотреть проекты для ZNRP и RRP.</p>
+  </section>
+
+  <section class="deck-section" id="deck">
+    <div class="deck-frame">
+      <div class="deck" id="deck-el" aria-live="polite"></div>
+
+      <button class="deck-nav prev" id="btn-prev" aria-label="Предыдущая работа">‹</button>
+      <button class="deck-nav next" id="btn-next" aria-label="Следующая работа">›</button>
+    </div>
+
+    <div class="deck-meta">
+      <span class="deck-count"><span id="idx">1</span> / <span id="total">8</span></span>
+      <h2 class="deck-title" id="cap-title">—</h2>
+      <p class="deck-file" id="cap-file">—</p>
+      <p class="deck-hint">Кликните по верхнему листу, свайпните или используйте стрелки ← →</p>
+    </div>
+  </section>
+
+  <section class="catalog" id="catalog">
+    <h3 class="catalog-title">Каталог</h3>
+    <div class="catalog-grid" id="catalog-grid"></div>
+  </section>
+
+  <section class="about" id="contact">
+    <div class="about-inner">
+      <h3>О альбоме</h3>
+      <p>Все работы промаркированы водяным знаком как пробные версии — финальные файлы
+        передаются заказчику после согласования. По вопросам сотрудничества:</p>
+      <a class="mail" href="mailto:hello@yourname.design">hello@yourname.design</a>
+    </div>
+  </section>
 </main>
-<footer>
-<p>&copy; 2026 DBratsky. Все права защищены. Дизайн по твоей цене.</p>
+
+<footer class="site-footer">
+  <span>© <span id="year"></span> Proof Album</span>
+  <span class="footer-note">портфолио · банеры · логотипы · стрим-оформление</span>
 </footer>
+
 <script>
-document.addEventListener('contextmenu',e=>e.preventDefault());
-document.onkeydown=function(e){
-if(e.keyCode==123)return false;
-if(e.ctrlKey&&e.shiftKey&&e.keyCode=='I'.charCodeAt(0))return false;
-if(e.ctrlKey&&e.shiftKey&&e.keyCode=='C'.charCodeAt(0))return false;
-if(e.ctrlKey&&e.shiftKey&&e.keyCode=='J'.charCodeAt(0))return false;
-if(e.ctrlKey&&e.keyCode=='U'.charCodeAt(0))return false;
+/* -------------------------------------------------------
+   Данные работ — имена файлов ДОЛЖНЫ совпадать с файлами
+   в папке /public
+------------------------------------------------------- */
+const works = [
+  { file: "cover_RRPvodznak.jpg",              title: "RRP — Обложка" },
+  { file: "logo_RRPvodznak.jpg",                title: "RRP — Логотип" },
+  { file: "logo_RRP1vodznak.png",               title: "RRP — Логотип (вариант 2)" },
+  { file: "bannerZNRPvodznak.jpg",              title: "ZNRP — Банер" },
+  { file: "ZNRPbanner_rulesvodznak.jpg",        title: "ZNRP — Банер (правила)" },
+  { file: "ZNRPlogo1vodznak.png",                title: "ZNRP — Логотип" },
+  { file: "баннерутреннийстримvodznak.png",     title: "Утренний стрим — Банер" },
+  { file: "баннер2стримvodznak.png",             title: "Вечерний стрим — Банер" },
+];
+
+const deckEl   = document.getElementById('deck-el');
+const capTitle = document.getElementById('cap-title');
+const capFile  = document.getElementById('cap-file');
+const idxEl    = document.getElementById('idx');
+const totalEl  = document.getElementById('total');
+const catalogGrid = document.getElementById('catalog-grid');
+
+totalEl.textContent = works.length;
+
+let order = works.map((_, i) => i);   // текущий порядок стопки (order[0] = верхняя карта)
+let animating = false;
+
+function imgSrc(file){
+  return 'public/' + encodeURIComponent(file);
 }
+
+function render(){
+  deckEl.innerHTML = '';
+  // рисуем от нижних к верхним, показываем максимум 5 карт стопки
+  const visible = order.slice(0, 5).reverse();
+  visible.forEach((workIndex, i) => {
+    const depth = visible.length - 1 - i; // 0 = верхняя карта
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.setProperty('--depth', depth);
+    card.style.zIndex = 100 - depth;
+
+    const img = document.createElement('img');
+    img.src = imgSrc(works[workIndex].file);
+    img.alt = works[workIndex].title;
+    img.draggable = false;
+    card.appendChild(img);
+
+    const tag = document.createElement('span');
+    tag.className = 'watermark-tag';
+    tag.textContent = 'PROOF';
+    card.appendChild(tag);
+
+    if(depth === 0){
+      card.classList.add('is-top');
+      card.addEventListener('click', () => next());
+      attachSwipe(card);
+    }
+    deckEl.appendChild(card);
+  });
+
+  const front = works[order[0]];
+  capTitle.textContent = front.title;
+  capFile.textContent = front.file;
+  idxEl.textContent = order[0] + 1;
+
+  renderCatalog();
+}
+
+function renderCatalog(){
+  catalogGrid.innerHTML = '';
+  works.forEach((w, i) => {
+    const item = document.createElement('button');
+    item.className = 'catalog-item' + (i === order[0] ? ' is-active' : '');
+    item.innerHTML = `<img src="${imgSrc(w.file)}" alt="${w.title}" draggable="false">
+                       <span>${w.title}</span>`;
+    item.addEventListener('click', () => jumpTo(i));
+    catalogGrid.appendChild(item);
+  });
+}
+
+function next(){
+  if(animating) return;
+  animating = true;
+  const top = deckEl.querySelector('.is-top');
+  if(top){
+    top.classList.add('fly-away');
+    top.addEventListener('animationend', () => {
+      order.push(order.shift());
+      render();
+      animating = false;
+    }, { once:true });
+  } else {
+    animating = false;
+  }
+}
+
+function prev(){
+  if(animating) return;
+  order.unshift(order.pop());
+  render();
+}
+
+function jumpTo(workIndex){
+  if(animating) return;
+  const pos = order.indexOf(workIndex);
+  if(pos === -1) return;
+  order = order.slice(pos).concat(order.slice(0, pos));
+  render();
+}
+
+function attachSwipe(el){
+  let startX = 0, startY = 0, dragging = false;
+  const start = (x, y) => { startX = x; startY = y; dragging = true; };
+  const end = (x, y) => {
+    if(!dragging) return;
+    dragging = false;
+    const dx = x - startX, dy = y - startY;
+    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) next();
+  };
+  el.addEventListener('pointerdown', e => start(e.clientX, e.clientY));
+  el.addEventListener('pointerup', e => end(e.clientX, e.clientY));
+}
+
+document.getElementById('btn-next').addEventListener('click', next);
+document.getElementById('btn-prev').addEventListener('click', prev);
+
+window.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight') next();
+  if(e.key === 'ArrowLeft') prev();
+});
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+render();
 </script>
 </body>
 </html>
