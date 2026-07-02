@@ -110,14 +110,38 @@ const capFile  = document.getElementById('cap-file');
 const idxEl    = document.getElementById('idx');
 const totalEl  = document.getElementById('total');
 const catalogGrid = document.getElementById('catalog-grid');
+const deckFrame = document.querySelector('.deck-frame');
 
 totalEl.textContent = works.length;
 
 let order = works.map((_, i) => i);   // текущий порядок стопки (order[0] = верхняя карта)
 let animating = false;
+let currentRatio = 4 / 5; // ширина/высота, обновляется под реальную картинку
 
 function imgSrc(file){
   return 'public/' + encodeURIComponent(file);
+}
+
+// подгоняем высоту рамки под пропорции текущей верхней картинки,
+// чтобы контейнер не резал/не искажал изображение
+function applyFrameHeight(){
+  const w = deckFrame.clientWidth;
+  let h = w / currentRatio;
+  h = Math.max(260, Math.min(560, h)); // разумные пределы, чтобы очень узкие/высокие банеры не ломали вёрстку
+  deckFrame.style.height = h + 'px';
+}
+window.addEventListener('resize', applyFrameHeight);
+
+function watchRatio(img, depth){
+  if(depth !== 0) return;
+  const use = () => {
+    if(img.naturalWidth && img.naturalHeight){
+      currentRatio = img.naturalWidth / img.naturalHeight;
+      applyFrameHeight();
+    }
+  };
+  if(img.complete && img.naturalWidth){ use(); }
+  else img.addEventListener('load', use, { once:true });
 }
 
 function render(){
@@ -131,16 +155,22 @@ function render(){
     card.style.setProperty('--depth', depth);
     card.style.zIndex = 100 - depth;
 
+    const inner = document.createElement('div');
+    inner.className = 'card-inner';
+
     const img = document.createElement('img');
     img.src = imgSrc(works[workIndex].file);
     img.alt = works[workIndex].title;
     img.draggable = false;
-    card.appendChild(img);
+    inner.appendChild(img);
+    watchRatio(img, depth);
 
     const tag = document.createElement('span');
     tag.className = 'watermark-tag';
     tag.textContent = 'PROOF';
-    card.appendChild(tag);
+    inner.appendChild(tag);
+
+    card.appendChild(inner);
 
     if(depth === 0){
       card.classList.add('is-top');
@@ -172,24 +202,31 @@ function renderCatalog(){
 
 function next(){
   if(animating) return;
+  const top = deckEl.querySelector('.is-top .card-inner');
+  if(!top){ return; }
   animating = true;
-  const top = deckEl.querySelector('.is-top');
-  if(top){
-    top.classList.add('fly-away');
-    top.addEventListener('animationend', () => {
-      order.push(order.shift());
-      render();
-      animating = false;
-    }, { once:true });
-  } else {
+  top.classList.add('turn-out');
+  top.addEventListener('animationend', () => {
+    order.push(order.shift());
+    render();
     animating = false;
-  }
+  }, { once:true });
 }
 
 function prev(){
   if(animating) return;
+  animating = true;
   order.unshift(order.pop());
   render();
+  requestAnimationFrame(() => {
+    const top = deckEl.querySelector('.is-top .card-inner');
+    if(!top){ animating = false; return; }
+    top.classList.add('turn-in');
+    top.addEventListener('animationend', () => {
+      top.classList.remove('turn-in');
+      animating = false;
+    }, { once:true });
+  });
 }
 
 function jumpTo(workIndex){
@@ -223,6 +260,7 @@ window.addEventListener('keydown', e => {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+applyFrameHeight();
 render();
 
 /* Лёгкая защита от случайного копирования картинок.
